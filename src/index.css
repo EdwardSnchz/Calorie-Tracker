@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@keyframes shadow-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 1); /* Sombra inicial roja */
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(141, 0, 0, 0); /* Sombra desvaneciéndose */
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+.sombra{
+    animation: shadow-pulse 3s ease-in-out;
+}
