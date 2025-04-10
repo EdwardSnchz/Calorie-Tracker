@@ -54,6 +54,14 @@ export default function Form({dispatch, state} : FormProps) {
     })
   }
 
+  function hiddenButton() {
+    const BtnText1 = document.getElementById('BtnSubmit1') as HTMLButtonElement
+    const BtnText2 = document.getElementById('BtnSubmit2') as HTMLButtonElement
+
+    BtnText1.hidden = false
+    BtnText2.hidden = true
+  }
+
   return (
     <form className=" space-y-5 bg-white shadow p-10 rounded-lg" id="calorie-form" onSubmit={handleSubmit}>
 
@@ -85,6 +93,16 @@ export default function Form({dispatch, state} : FormProps) {
       id="BtnSubmit1"
       disabled={!isValidActivity()}>
       </input>
+
+      <button
+        hidden
+        id="BtnSubmit2"
+        className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer rounded disabled:opacity-10"
+        onClick={hiddenButton}
+        type="submit"
+      >
+        Modificar Actividad
+      </button>
 
     </form>
   )

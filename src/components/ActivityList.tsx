@@ -16,6 +16,37 @@ export default function ActivityList({activities, dispatch } : ActivityListProps
   
   const isEmptyActivities = useMemo(() => activities.length === 0, [activities])
 
+  function scrolltop() {
+    const idForm = document.getElementById('calorie-form');
+    const BtnText1 = document.getElementById('BtnSubmit1') as HTMLButtonElement
+    const BtnText2 = document.getElementById('BtnSubmit2') as HTMLButtonElement
+
+    if (idForm) {
+      setTimeout(() => {
+        BtnText2.hidden = false
+        BtnText1.hidden = true
+      }, 100);
+
+      // Eliminar clase después de un tiempo (4 segundos)
+      const removeBorder = () => {
+        setTimeout(() => {
+          idForm.classList.remove('sombra');
+        }, 4000);
+      };
+
+      /* Redirige al usuario hacia el formulario para editarlo*/
+      window.scrollTo({
+        top: 0, /* ó se puede usar "idForm.offsetTop" para obtener la posición vertical de un elemento relativa a su contenedor posicionado*/
+        behavior: 'smooth'
+      });
+      
+      idForm.classList.add('sombra');
+      removeBorder();
+    } else {
+      console.error('Formulario no encontrado');
+    }
+  }
+
   return (
     <>
       <h2 className=" text-4xl font-bold text-slate-600 text-center">Comida y Actividades</h2>
@@ -41,6 +72,7 @@ export default function ActivityList({activities, dispatch } : ActivityListProps
               <button 
                 onClick={() => {
                   dispatch({type:'set-activeId', payload: {id: activity.id}});
+                  scrolltop()
                 }}
               >
                 <PencilSquareIcon
