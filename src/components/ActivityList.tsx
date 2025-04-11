@@ -6,46 +6,22 @@ import { ActivityAction } from "../reducers/activityReducer"
 
 type ActivityListProps = {
   activities : Activity[],
-  dispatch: Dispatch<ActivityAction>
+  dispatch: Dispatch<ActivityAction>,
+  shadowForm: () => void  
 }
 
-export default function ActivityList({activities, dispatch } : ActivityListProps) {
+export default function ActivityList({activities, dispatch, shadowForm } : ActivityListProps) {
   
   const categoryName = useMemo(() => 
     (category : Activity['category']) => categories.map( cat => cat.id === category ? cat.name : ''), [activities])
-  
+
   const isEmptyActivities = useMemo(() => activities.length === 0, [activities])
 
-  function scrolltop() {
-    const idForm = document.getElementById('calorie-form');
-    const BtnText1 = document.getElementById('BtnSubmit1') as HTMLButtonElement
-    const BtnText2 = document.getElementById('BtnSubmit2') as HTMLButtonElement
-
-    if (idForm) {
-      setTimeout(() => {
-        BtnText2.hidden = false
-        BtnText1.hidden = true
-      }, 100);
-
-      // Eliminar clase después de un tiempo (4 segundos)
-      const removeBorder = () => {
-        setTimeout(() => {
-          idForm.classList.remove('sombra');
-        }, 4000);
-      };
-
-      /* Redirige al usuario hacia el formulario para editarlo*/
-      window.scrollTo({
-        top: 0, /* ó se puede usar "idForm.offsetTop" para obtener la posición vertical de un elemento relativa a su contenedor posicionado*/
-        behavior: 'smooth'
-      });
-      
-      idForm.classList.add('sombra');
-      removeBorder();
-    } else {
-      console.error('Formulario no encontrado');
-    }
+  function handleEdit(id: Activity['id']) {
+    dispatch({type:'set-activeId', payload: {id}});
+    shadowForm()
   }
+  
 
   return (
     <>
@@ -70,10 +46,7 @@ export default function ActivityList({activities, dispatch } : ActivityListProps
 
             <div className=" flex gap-5 items-center">
               <button 
-                onClick={() => {
-                  dispatch({type:'set-activeId', payload: {id: activity.id}});
-                  scrolltop()
-                }}
+                onClick={() => handleEdit(activity.id)}
               >
                 <PencilSquareIcon
                   className=" h-8 w-8 text-gray-800 cursor-pointer"

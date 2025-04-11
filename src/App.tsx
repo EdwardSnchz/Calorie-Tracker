@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react"
+import { useEffect, useReducer, useState } from "react"
 import Form from "./components/Form"
 import { initialState, activityReduce } from "./reducers/activityReducer"
 import ActivityList from "./components/ActivityList"
@@ -7,13 +7,25 @@ import CalorieTracker from "./components/CalorieTracker"
 function App() {
 
   const [state, dispatch] = useReducer(activityReduce, initialState)
+  const [showShadow, setShowShadow] = useState(false);
+  
+  // const canRestartApp = () => useMemo(() => state.activities.length, [state.activities])
+  const canRestartApp : boolean = state.activities.length > 0
 
   useEffect(() => {
     localStorage.setItem('activities', JSON.stringify(state.activities))
   },[state.activities])
 
-  // const canRestartApp = () => useMemo(() => state.activities.length, [state.activities])
-  const canRestartApp : boolean = state.activities.length > 0
+  const shadowForm = () => {
+    setShowShadow(true);
+
+    // formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+
+    // Ocultar sombra después de 4 segundos
+    setTimeout(() => setShowShadow(false), 3000);
+  };
+  
   
   return (
     <>
@@ -34,6 +46,7 @@ function App() {
           <Form
           dispatch={dispatch}
           state={state}
+          showShadow={showShadow}
           />
         </div>
       </section>
@@ -50,6 +63,7 @@ function App() {
         <ActivityList
           activities={state.activities}
           dispatch={dispatch}
+          shadowForm={shadowForm} 
         />
       </section>
     </>

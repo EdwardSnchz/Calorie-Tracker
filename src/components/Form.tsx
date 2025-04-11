@@ -6,7 +6,8 @@ import { ActivityAction, ActivityState } from "../reducers/activityReducer"
 
 type FormProps = {
   dispatch : Dispatch<ActivityAction>
-  state : ActivityState
+  state : ActivityState,
+  showShadow : boolean
 }
 
 const initialState : Activity = {
@@ -16,7 +17,7 @@ const initialState : Activity = {
   calories: 0
 }
 
-export default function Form({dispatch, state} : FormProps) {
+export default function Form({dispatch, state, showShadow} : FormProps) {
 
   const [activity, setActivity] = useState<Activity>(initialState)
 
@@ -54,16 +55,8 @@ export default function Form({dispatch, state} : FormProps) {
     })
   }
 
-  function hiddenButton() {
-    const BtnText1 = document.getElementById('BtnSubmit1') as HTMLButtonElement
-    const BtnText2 = document.getElementById('BtnSubmit2') as HTMLButtonElement
-
-    BtnText1.hidden = false
-    BtnText2.hidden = true
-  }
-
   return (
-    <form className=" space-y-5 bg-white shadow p-10 rounded-lg" id="calorie-form" onSubmit={handleSubmit}>
+    <form className={`space-y-5 bg-white shadow p-10 rounded-lg ${showShadow ? 'sombra' : ''}`} onSubmit={handleSubmit} >
 
       <div className=" grid grid-cols-1 gap-3">
         <label htmlFor="category" className=" font-bold">Categria:</label>
@@ -87,22 +80,12 @@ export default function Form({dispatch, state} : FormProps) {
       </div>
 
       <input 
-      className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer rounded disabled:opacity-10" 
-      type="submit"
-      value={activity.category === 1 ? 'Guardar Comida' : 'Guardar Ejercicio'}
-      id="BtnSubmit1"
-      disabled={!isValidActivity()}>
-      </input>
-
-      <button
-        hidden
-        id="BtnSubmit2"
-        className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer rounded disabled:opacity-10"
-        onClick={hiddenButton}
+        className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer rounded disabled:opacity-10" 
         type="submit"
+        value={activity.category === 1 ? 'Guardar Comida' : 'Guardar Ejercicio'}
+        disabled={!isValidActivity()}
       >
-        Modificar Actividad
-      </button>
+      </input>
 
     </form>
   )
