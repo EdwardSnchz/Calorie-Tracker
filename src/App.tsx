@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 import Form from "./components/Form"
 import { initialState, activityReduce } from "./reducers/activityReducer"
 import ActivityList from "./components/ActivityList"
@@ -8,6 +8,7 @@ function App() {
 
   const [state, dispatch] = useReducer(activityReduce, initialState)
   const [showShadow, setShowShadow] = useState(false);
+  const elementRef = useRef<HTMLElement>(null)
   
   // const canRestartApp = () => useMemo(() => state.activities.length, [state.activities])
   const canRestartApp : boolean = state.activities.length > 0
@@ -19,12 +20,15 @@ function App() {
   const shadowForm = () => {
     setShowShadow(true);
 
-    // formRef.current?.scrollIntoView({ behavior: 'smooth' });
     window.scrollTo({top: 0, behavior: 'smooth'});
 
     // Ocultar sombra después de 4 segundos
     setTimeout(() => setShowShadow(false), 3000);
   };
+
+  function scrollToSection() {
+    elementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   
   
   return (
@@ -47,11 +51,12 @@ function App() {
           dispatch={dispatch}
           state={state}
           showShadow={showShadow}
+          scrollToSection={scrollToSection}
           />
         </div>
       </section>
 
-      <section className=" bg-gray-800 py-10">
+      <section ref={elementRef} className=" bg-gray-800 py-10">
         <div className=" max-w-4xl mx-auto">
           <CalorieTracker
             activities={state.activities }

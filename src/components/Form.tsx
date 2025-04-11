@@ -7,7 +7,8 @@ import { ActivityAction, ActivityState } from "../reducers/activityReducer"
 type FormProps = {
   dispatch : Dispatch<ActivityAction>
   state : ActivityState,
-  showShadow : boolean
+  showShadow : boolean,
+  scrollToSection : () => void
 }
 
 const initialState : Activity = {
@@ -17,7 +18,7 @@ const initialState : Activity = {
   calories: 0
 }
 
-export default function Form({dispatch, state, showShadow} : FormProps) {
+export default function Form({dispatch, state, showShadow, scrollToSection} : FormProps) {
 
   const [activity, setActivity] = useState<Activity>(initialState)
 
@@ -82,6 +83,7 @@ export default function Form({dispatch, state, showShadow} : FormProps) {
       <input 
         className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer rounded disabled:opacity-10" 
         type="submit"
+        onClick={scrollToSection}
         value={activity.category === 1 ? 'Guardar Comida' : 'Guardar Ejercicio'}
         disabled={!isValidActivity()}
       >
